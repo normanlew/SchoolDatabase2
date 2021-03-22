@@ -23,7 +23,7 @@ export default class Courses extends Component {
 
     let courseListing = courses.map(course => 
         <div className="grid-33" key={course.id}>
-        <a className="course--module course--link" href={"api/courses/" + course.id}>
+        <a className="course--module course--link" href={"/api/courses/" + course.id}>
             <h4 className="course--label">Course</h4>
             <h3 className="course--title">{course.title}</h3>
             </a>

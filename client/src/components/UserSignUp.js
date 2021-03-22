@@ -90,6 +90,7 @@ export default class UserSignUp extends Component {
   }
 
   submit = () => {
+    console.log(this.props);
     const { context } = this.props;
     console.log(context);
 
@@ -113,6 +114,9 @@ export default class UserSignUp extends Component {
         .then( errors => {
           if (errors.length) {
             this.setState({ errors });
+          }
+          else {
+            console.log(`Successfully signed up!`);
           }
         })
         .catch( err => {

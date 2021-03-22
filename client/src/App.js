@@ -23,7 +23,7 @@ export default () => (
 
       <Switch>
 
-        <Route exact path="/api/" component = {Courses} />
+        <Route exact path="/api/" component={Courses} />
         <Route path="/api/courses/:id" component={CourseDetail} />
         <Route path="/api/signin" component={UserSignIn} />
         <Route path="/api/signup" component={UserSignUpWithContext} />
