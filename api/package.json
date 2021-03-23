@@ -20,6 +20,7 @@
     "express": "^4.16.3",
     "express-validator": "^6.6.1",
     "morgan": "^1.9.0",
+    "node-pre-gyp": "^0.17.0",
     "promise.prototype.finally": "^3.1.0",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
