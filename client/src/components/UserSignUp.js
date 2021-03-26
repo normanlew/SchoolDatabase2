@@ -90,9 +90,7 @@ export default class UserSignUp extends Component {
   }
 
   submit = () => {
-    console.log(this.props);
     const { context } = this.props;
-    console.log(context);
 
     const {
       firstName,
@@ -124,11 +122,9 @@ export default class UserSignUp extends Component {
           this.props.history.push('/error');
         });
     }
-
-    
   }
 
   cancel = () => {
-    this.props.history.push('/');
+    this.props.history.push('/api');
   }
 }
