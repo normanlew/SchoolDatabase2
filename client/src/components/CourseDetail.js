@@ -7,17 +7,17 @@ export default class CourseDetail extends Component {
     user: {},
   }
 
-    componentDidMount() {
-        fetch('http://localhost:5000/api/courses/' + this.props.match.params.id)
-        .then(response => response.json())
-        .then(data => {
-            this.setState ({ 
-                course: data,
-                user: data.User,
-            });
-            
-        });
-    }
+  componentDidMount() {
+      fetch('http://localhost:5000/api/courses/' + this.props.match.params.id)
+      .then(response => response.json())
+      .then(data => {
+          this.setState ({ 
+              course: data,
+              user: data.User,
+          });
+          
+      });
+  }
 
   render() {
     const {
@@ -25,23 +25,37 @@ export default class CourseDetail extends Component {
       user
     } = this.state;
 
-    console.log("course is " + course);
+    const { context } = this.props;
+    const authUser = context.authenticatedUser;
+
+    const isAuthorized = authUser && (authUser.userId === user.id);
+    if (authUser) {
+      console.log(authUser);
+    }
+    console.log(isAuthorized);
 
     return (
       <div id="root">
         <div>
-          <div className="header">
-            <div className="bounds">
-              <h1 className="header--logo">Courses</h1>
-              <nav><span>Welcome Joe Smith!</span><a className="signout" href="index.html">Sign Out</a></nav>
-            </div>
-          </div>
           <hr></hr>
           <div>
             <div className="actions--bar">
               <div className="bounds">
-                <div className="grid-100"><span><a className="button" href="update-course.html">Update Course</a><a className="button" href="#">Delete Course</a></span><a
-                    className="button button-secondary" href="index.html">Return to List</a></div>
+                <div className="grid-100">
+                  {
+                    isAuthorized ? (
+                      <React.Fragment>
+                        <span><a className="button" href="update-course.html">Update Course</a><a className="button" onClick={this.handleDelete} href="#">Delete Course</a></span>
+                        <a className="button button-secondary" href="index.html">Return to List</a>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>
+                        <a className="button button-secondary" href="index.html">Return to List</a>
+                      </React.Fragment>
+                    )
+                  }
+                </div>
+                
               </div>
             </div>
             <div className="bounds course--detail">
@@ -76,6 +90,22 @@ export default class CourseDetail extends Component {
         </div>
       </div>
     );
+  }
+
+  handleDelete = (event) => {
+    event.preventDefault();
+    const {
+      course,
+      user
+    } = this.state;
+
+    console.log('Inside handleDelete function in CourseDetail');
+    const { context } = this.props;
+    const authUser = context.authenticatedUser;
+    const pass = context.unencryptedPassword;
+    console.log('unencrypted password is ' + pass);
+    console.log('authUsers is ' + authUser);
+    context.actions.deleteCourse(user.emailAddress, pass, course.id)
   }
 
 //   change = (event) => {

@@ -34,22 +34,22 @@ export default class UserSignUp extends Component {
             elements={() => (
               <React.Fragment>
                 <input 
-                  id="firstname" 
-                  name="firstname" 
+                  id="firstName" 
+                  name="firstName" 
                   type="text"
                   value={firstName} 
                   onChange={this.change} 
                   placeholder="First Name" />
                 <input 
-                  id="lastname" 
-                  name="lastname" 
+                  id="lastName" 
+                  name="lastName" 
                   type="text"
                   value={lastName} 
                   onChange={this.change} 
                   placeholder="Last Name" />
                 <input 
-                  id="emailaddress" 
-                  name="emailaddress"
+                  id="emailAddress" 
+                  name="emailAddress"
                   type="type"
                   value={emailAddress} 
                   onChange={this.change} 
@@ -62,8 +62,8 @@ export default class UserSignUp extends Component {
                   onChange={this.change} 
                   placeholder="Password" />
                 <input 
-                  id="confirmpassword" 
-                  name="confirmpassword" 
+                  id="confirmPassword" 
+                  name="confirmPassword" 
                   type="password"
                   value={confirmPassword} 
                   onChange={this.change} 
@@ -114,6 +114,7 @@ export default class UserSignUp extends Component {
             this.setState({ errors });
           }
           else {
+            context.actions.signIn(emailAddress, password)
             console.log(`Successfully signed up!`);
           }
         })
@@ -125,6 +126,6 @@ export default class UserSignUp extends Component {
   }
 
   cancel = () => {
-    this.props.history.push('/api');
+    this.props.history.push('/');
   }
 }
