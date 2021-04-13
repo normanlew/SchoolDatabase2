@@ -13,6 +13,7 @@ export default class Data {
 
     if (body !== null) {
       options.body = JSON.stringify(body);
+      console.log("body is" + options.body);
     }
 
     if (requiresAuth) {
@@ -56,5 +57,13 @@ export default class Data {
 
   async deleteCourse(emailAddress, password, courseId) {
     const response = await this.api(`/courses/` + courseId, 'DELETE', null, true, { emailAddress, password });
+  }
+
+  async createCourse(course, emailAddress, password) {
+    const response = await this.api('/courses', 'POST', course, true, { emailAddress, password });
+  }
+
+  async updateCourse(course, emailAddress, password) {
+    const response = await this.api('/courses/' + course.id, 'PUT', course, true, { emailAddress, password });
   }
 }

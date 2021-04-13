@@ -24,6 +24,7 @@ const router = express.Router();
 // Code and comments for this Authentication middleware were taken from a tutorial 
 // at teamtreehouse.com
 const authenticateUser = async (req, res, next) => {
+    console.log('inside authenticateUser of api routes.js');
     let message = null;
     // Parse the user's credentials from the Authorization header.
     const credentials = auth(req);
@@ -53,7 +54,7 @@ const authenticateUser = async (req, res, next) => {
 
                 // If the passwords match...
                 if (authenticated) {
-                    console.log(`Authentication successful for username: ${user.username}`);
+                    console.log(`Authentication successful for username: ${user.firstName}`);
                     // Then store the retrieved user object on the request object
                     // so any middleware functions that follow this middleware function
                     // will have access to the user's information.
@@ -64,7 +65,7 @@ const authenticateUser = async (req, res, next) => {
                 }
             }
             else {
-                message = `User not found for username: ${credentials.firstName}`;
+                message = `User not found for username: ${credentials.name}`;
             }
         }
         catch(error) {
@@ -178,6 +179,7 @@ router.post('/courses', authenticateUser, [
         .exists({ checkNull: true, checkFalsy: true})
         .withMessage('Please provide a value for "description"'),
 ], asyncHandler (async (req, res, next) => {
+    console.log("inside POST courses in API");
     try {
         const user = req.currentUser;
 
@@ -188,6 +190,7 @@ router.post('/courses', authenticateUser, [
         if (!errors.isEmpty()) {
             // Get a list of error messages
             const errorMessages = errors.array().map(error => error.msg);
+            console.log('errors: ' + errorMessages);
 
             // Return the validation errors to the client
             return res.status(400).json( { errors: errorMessages});
@@ -195,6 +198,8 @@ router.post('/courses', authenticateUser, [
 
         // Get the course from the request body
         const course = req.body;
+        // console.log('course: ' + course.title + ', ' + course.description + ', ' + course.estimatedTime + 
+        //         ', ' + course.materialsNeeded);
 
         // Add the course to the database
         const newCourse = await Course.create({
@@ -211,7 +216,7 @@ router.post('/courses', authenticateUser, [
         if (error.name.includes('Sequelize')) {
            // Return the validation errors to the client
             error.status = 400;
-            console.error(error.message);
+            // console.error(error.message + "...");
             next(error);
         } else {
           throw error;

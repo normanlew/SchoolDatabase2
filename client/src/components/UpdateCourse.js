@@ -2,14 +2,34 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Form from './Form';
 
-export default class CreateCourse extends Component {
+export default class UpdateCourse extends Component {
   state = {
     title: '',
     description: '',
     estimatedTime: '',
     materialsNeeded: '',
+    courseId: '',
     errors: [],
+    course: {},
+    user: {},
   }
+
+  componentDidMount() {
+    fetch('http://localhost:5000/api/courses/' + this.props.match.params.id)
+    .then(response => response.json())
+    .then(data => {
+        this.setState ({ 
+            // course: data,
+            courseId: data.id,
+            user: data.User,
+            title: data.title,
+            description: data.description,
+            estimatedTime: data.estimatedTime,
+            materialsNeeded: data.materialsNeeded,
+        });
+        
+    });
+}
 
   render() {
     const {
@@ -18,6 +38,8 @@ export default class CreateCourse extends Component {
         estimatedTime,
         materialsNeeded,
         errors,
+        course,
+        user,
     } = this.state;
 
     const { context } = this.props;
@@ -35,7 +57,7 @@ export default class CreateCourse extends Component {
                         cancel={this.cancel}
                         errors={errors}
                         submit={this.submit}
-                        submitButtonText="Create Course"
+                        submitButtonText="Update Course"
                         elements={() => (
                         <React.Fragment>
                             <div className="grid-66">
@@ -48,10 +70,10 @@ export default class CreateCourse extends Component {
                                             type="text" 
                                             className="input-title course--title--input" 
                                             onChange={this.change} 
-                                            placeholder="Course title..."
+                                            // placeholder="Course title..."
                                             value={title} />
                                     </div>
-                                    <p>By {authUser.firstName} {authUser.lastName}</p>
+                                    <p>By {user.firstName} {user.lastName}</p>
                                 </div>
                                 <div className="course--description">
                                     <div>
@@ -60,7 +82,7 @@ export default class CreateCourse extends Component {
                                             name="description" 
                                             className="" 
                                             onChange={this.change} 
-                                            placeholder="Course description..."
+                                            // placeholder="Course description..."
                                             value={description}>
                                         </textarea>
                                     </div>
@@ -78,7 +100,7 @@ export default class CreateCourse extends Component {
                                                 type="text" 
                                                 className="course--time--input"
                                                 onChange={this.change} 
-                                                placeholder="Hours" 
+                                                // placeholder="Hours" 
                                                 value={estimatedTime} />
                                         </div>
                                     </li>
@@ -90,7 +112,7 @@ export default class CreateCourse extends Component {
                                                 name="materialsNeeded" 
                                                 className="" 
                                                 onChange={this.change} 
-                                                placeholder="List materials..."
+                                                // placeholder="List materials..."
                                                 value={materialsNeeded}>
                                             </textarea>
                                         </div>
@@ -112,11 +134,12 @@ export default class CreateCourse extends Component {
         const { context } = this.props;
 
         const {
+            // course,
             title,
             description,
             estimatedTime,
             materialsNeeded,
-            errors,
+            courseId,
         } = this.state;
 
 
@@ -125,10 +148,9 @@ export default class CreateCourse extends Component {
             description,
             estimatedTime,
             materialsNeeded,
+            id: courseId,
         };
 
-        
-        // console.log('Inside submit function in CreateCourse');
         // console.log('course is ' + course);
         const authUser = context.authenticatedUser;
         const pass = context.unencryptedPassword;
@@ -136,14 +158,14 @@ export default class CreateCourse extends Component {
         // console.log('authUsers email is ' + authUser.username);
             
 
-        context.data.createCourse(course, authUser.username, pass)
+        context.data.updateCourse(course, authUser.username, pass)
             .then( errors => {
                 if (errors.length) {
                 this.setState({ errors });
                 console.log(errors);
                 }
                 else {
-                console.log(`Course is created!`);
+                console.log(`Course is updated!`);
                 this.props.history.push('/');
                 }
             })

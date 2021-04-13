@@ -20,6 +20,7 @@ export default class CourseDetail extends Component {
   }
 
   render() {
+
     const {
       course,
       user
@@ -27,6 +28,8 @@ export default class CourseDetail extends Component {
 
     const { context } = this.props;
     const authUser = context.authenticatedUser;
+
+    const subAddress = course.id + "/update";
 
     const isAuthorized = authUser && (authUser.userId === user.id);
     if (authUser) {
@@ -45,7 +48,7 @@ export default class CourseDetail extends Component {
                   {
                     isAuthorized ? (
                       <React.Fragment>
-                        <span><a className="button" href="update-course.html">Update Course</a><a className="button" onClick={this.handleDelete} href="#">Delete Course</a></span>
+                        <span><a className="button" href={subAddress}>Update Course</a><a className="button" onClick={this.handleDelete} href="#">Delete Course</a></span>
                         <a className="button button-secondary" href="index.html">Return to List</a>
                       </React.Fragment>
                     ) : (
@@ -105,7 +108,7 @@ export default class CourseDetail extends Component {
     const pass = context.unencryptedPassword;
     console.log('unencrypted password is ' + pass);
     console.log('authUsers is ' + authUser);
-    context.actions.deleteCourse(user.emailAddress, pass, course.id)
+    context.data.deleteCourse(user.emailAddress, pass, course.id)
   }
 
 //   change = (event) => {

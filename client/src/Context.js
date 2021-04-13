@@ -67,9 +67,13 @@ export class Provider extends Component {
     Cookies.remove('unencryptedPassword');
   }
 
-  deleteCourse = async (emailAddress, password, id) => {
-    await this.data.deleteCourse(emailAddress, password, id);
-  }
+  // deleteCourse = async (emailAddress, password, id) => {
+  //   await this.data.deleteCourse(emailAddress, password, id);
+  // }
+
+  // createCourse = async (emailAddress, password, title, description, time, materials) {
+  //   await this
+  // }
 }
 
 export const Consumer = Context.Consumer;
