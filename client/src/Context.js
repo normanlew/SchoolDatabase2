@@ -56,11 +56,11 @@ export class Provider extends Component {
 
   // Signs out user by removing user's login information from the global state
   signOut = () => {
-    this.setState(() => {
-      return {
+    this.setState({
+      // return {
         authenticatedUser: null,
         unencryptedPassword: null,
-      };
+      // };
     });
     Cookies.remove('authenticatedUser');
     Cookies.remove('password');
