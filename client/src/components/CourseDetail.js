@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import ReactMarkdown from "react-markdown";
 
 export default class CourseDetail extends Component {
+  
   state = {
     course: {},
     user: {},
@@ -20,7 +21,6 @@ export default class CourseDetail extends Component {
   }
 
   render() {
-
     const {
       course,
       user
@@ -32,10 +32,6 @@ export default class CourseDetail extends Component {
     const subAddress = course.id + "/update";
 
     const isAuthorized = authUser && (authUser.userId === user.id);
-    if (authUser) {
-      console.log(authUser);
-    }
-    console.log(isAuthorized);
 
     return (
       <div id="root">
@@ -49,11 +45,11 @@ export default class CourseDetail extends Component {
                     isAuthorized ? (
                       <React.Fragment>
                         <span><a className="button" href={subAddress}>Update Course</a><a className="button" onClick={this.handleDelete} href="#">Delete Course</a></span>
-                        <a className="button button-secondary" href="index.html">Return to List</a>
+                        <a className="button button-secondary" href="/">Return to List</a>
                       </React.Fragment>
                     ) : (
                       <React.Fragment>
-                        <a className="button button-secondary" href="index.html">Return to List</a>
+                        <a className="button button-secondary" href="/">Return to List</a>
                       </React.Fragment>
                     )
                   }
@@ -69,7 +65,7 @@ export default class CourseDetail extends Component {
                   <p>By {user.firstName} {user.lastName}</p>
                 </div>
                 <div className="course--description">
-                  <p>{course.description}</p>
+                  <ReactMarkdown>{course.description}</ReactMarkdown>     
                 </div>
               </div>
               <div className="grid-25 grid-right">
@@ -81,9 +77,7 @@ export default class CourseDetail extends Component {
                     </li>
                     <li className="course--stats--list--item">
                       <h4>Materials Needed</h4>
-                      <ul>
-                        <li>{course.materialsNeeded}</li>
-                      </ul>
+                      <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown> 
                     </li>
                   </ul>
                 </div>
@@ -95,6 +89,8 @@ export default class CourseDetail extends Component {
     );
   }
 
+  // Removes the course from the database
+  // Only the owner (creator) of the course may delete it
   handleDelete = (event) => {
     event.preventDefault();
     const {
@@ -102,50 +98,9 @@ export default class CourseDetail extends Component {
       user
     } = this.state;
 
-    console.log('Inside handleDelete function in CourseDetail');
     const { context } = this.props;
     const authUser = context.authenticatedUser;
     const pass = context.unencryptedPassword;
-    console.log('unencrypted password is ' + pass);
-    console.log('authUsers is ' + authUser);
     context.data.deleteCourse(user.emailAddress, pass, course.id)
   }
-
-//   change = (event) => {
-//     const name = event.target.name;
-//     const value = event.target.value;
-
-//     this.setState(() => {
-//       return {
-//         [name]: value
-//       };
-//     });
-//   }
-
-//   submit = () => {
-//     const { context } = this.props;
-//     const { from } = this.props.location.state || { from: { pathname: '/authenticated' } };
-//     const { username, password } = this.state;
-//     context.actions.signIn(username, password)
-//       .then( user => {
-//         if (user === null) {
-//           this.setState( () => {
-//             return { errors: [ 'Sign-in was unsuccessful' ]};
-//           })
-//         }
-//         else {
-//           this.props.history.push(from);
-//           console.log(`Success!  ${username} is now signed in!`);
-//         }
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         this.props.history.push('/error');
-//       })
-
-//   }
-
-//   cancel = () => {
-//     this.props.history.push('/');
-//   }
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Form from './Form';
 
 export default class CreateCourse extends Component {
@@ -108,6 +107,7 @@ export default class CreateCourse extends Component {
     );
   }
 
+    // Send the course information to the API to create a course
     submit = () => {
         const { context } = this.props;
 
@@ -116,7 +116,6 @@ export default class CreateCourse extends Component {
             description,
             estimatedTime,
             materialsNeeded,
-            errors,
         } = this.state;
 
 
@@ -127,36 +126,29 @@ export default class CreateCourse extends Component {
             materialsNeeded,
         };
 
-        
-        // console.log('Inside submit function in CreateCourse');
-        // console.log('course is ' + course);
         const authUser = context.authenticatedUser;
         const pass = context.unencryptedPassword;
-        // console.log('unencrypted password is ' + pass);
-        // console.log('authUsers email is ' + authUser.username);
             
-
         context.data.createCourse(course, authUser.username, pass)
             .then( errors => {
                 if (errors.length) {
-                this.setState({ errors });
-                console.log(errors);
+                    this.setState({ errors });
                 }
                 else {
-                console.log(`Course is created!`);
-                this.props.history.push('/');
+                    this.setState({ errors: [] });
                 }
             })
             .catch( err => {
-                console.log(err);
-            //   this.props.history.push('/error');
+                this.props.history.push('/error');
             });
     }
 
+    // Cancel course creation and return user to the class index
     cancel = () => {
         this.props.history.push('/');
     }
 
+    // Update state with course attributes
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -166,34 +158,5 @@ export default class CreateCourse extends Component {
         [name]: value
         };
     });
-    }
-
-//   submit = () => {
-//     const { context } = this.props;
-//     const { from } = this.props.location.state || { from: { pathname: '/authenticated' } };
-//     const { username, password } = this.state;
-//     context.actions.signIn(username, password)
-//       .then( user => {
-//         if (user === null) {
-//           this.setState( () => {
-//             return { errors: [ 'Sign-in was unsuccessful' ]};
-//           })
-//         }
-//         else {
-//           this.props.history.push(from);
-//           console.log(`Success!  ${username} is now signed in!`);
-//         }
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         this.props.history.push('/error');
-//       })
-
-//   }
-
-//   cancel = () => {
-//     this.props.history.push('/');
-//   }
-// }
-
+  }
 }

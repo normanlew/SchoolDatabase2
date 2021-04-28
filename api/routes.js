@@ -24,7 +24,6 @@ const router = express.Router();
 // Code and comments for this Authentication middleware were taken from a tutorial 
 // at teamtreehouse.com
 const authenticateUser = async (req, res, next) => {
-    console.log('inside authenticateUser of api routes.js');
     let message = null;
     // Parse the user's credentials from the Authorization header.
     const credentials = auth(req);
@@ -34,8 +33,6 @@ const authenticateUser = async (req, res, next) => {
         // Attempt to retrieve the user from the database
         // by their email (i.e. the user's "key"
         // from the Authorization header).
-        
-        console.log('credentials: ' + credentials.name + ': ' + credentials.pass);
 
         try {
             const user = await User.findOne({ where: { emailAddress: credentials.name } });
@@ -45,16 +42,10 @@ const authenticateUser = async (req, res, next) => {
                 // Use the bcryptjs npm package to compare the user's password
                 // (from the Authorization header) to the user's password
                 // that was retrieved from the database.
-                console.log(user);
-                console.log(credentials.pass);
-                console.log(user.password);
                 const authenticated = bcryptjs.compareSync(credentials.pass, user.password);
-                console.log(credentials.pass === user.password);
-                console.log(authenticated);
 
                 // If the passwords match...
                 if (authenticated) {
-                    console.log(`Authentication successful for username: ${user.firstName}`);
                     // Then store the retrieved user object on the request object
                     // so any middleware functions that follow this middleware function
                     // will have access to the user's information.
@@ -78,7 +69,6 @@ const authenticateUser = async (req, res, next) => {
 
     // If user authentication failed...
     if (message) {
-        console.warn(message);
 
         // Return a response with a 401 Unauthorized HTTP status code.
         res.status(401).json({ message: 'Access Denied'});
@@ -179,7 +169,6 @@ router.post('/courses', authenticateUser, [
         .exists({ checkNull: true, checkFalsy: true})
         .withMessage('Please provide a value for "description"'),
 ], asyncHandler (async (req, res, next) => {
-    console.log("inside POST courses in API");
     try {
         const user = req.currentUser;
 
@@ -190,7 +179,6 @@ router.post('/courses', authenticateUser, [
         if (!errors.isEmpty()) {
             // Get a list of error messages
             const errorMessages = errors.array().map(error => error.msg);
-            console.log('errors: ' + errorMessages);
 
             // Return the validation errors to the client
             return res.status(400).json( { errors: errorMessages});
@@ -198,8 +186,6 @@ router.post('/courses', authenticateUser, [
 
         // Get the course from the request body
         const course = req.body;
-        // console.log('course: ' + course.title + ', ' + course.description + ', ' + course.estimatedTime + 
-        //         ', ' + course.materialsNeeded);
 
         // Add the course to the database
         const newCourse = await Course.create({
@@ -212,11 +198,11 @@ router.post('/courses', authenticateUser, [
 
         // Set the status to 201 and end the response
         res.status(201).location("/courses/" + newCourse.id).end();
+
     } catch (error) {
         if (error.name.includes('Sequelize')) {
            // Return the validation errors to the client
             error.status = 400;
-            // console.error(error.message + "...");
             next(error);
         } else {
           throw error;
@@ -279,10 +265,8 @@ router.put('/courses/:id', authenticateUser, [
 // Deletes a course and returns no content
 router.delete('/courses/:id', authenticateUser, async(req, res, next) => {
     const user = req.currentUser;
-    console.log('inside delete function of api, user is ' + user);
     try {
         const course = await Course.findOne({where: { id: req.params.id}});
-        console.log('inside delete function of api, course is ' + course);
         if (course) {
             if (course.userId === user.id) {
                 await course.destroy();

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Form from './Form';
 
 export default class UpdateCourse extends Component {
@@ -19,7 +18,6 @@ export default class UpdateCourse extends Component {
     .then(response => response.json())
     .then(data => {
         this.setState ({ 
-            // course: data,
             courseId: data.id,
             user: data.User,
             title: data.title,
@@ -27,7 +25,6 @@ export default class UpdateCourse extends Component {
             estimatedTime: data.estimatedTime,
             materialsNeeded: data.materialsNeeded,
         });
-        
     });
 }
 
@@ -38,19 +35,15 @@ export default class UpdateCourse extends Component {
         estimatedTime,
         materialsNeeded,
         errors,
-        course,
         user,
     } = this.state;
-
-    const { context } = this.props;
-    const authUser = context.authenticatedUser;
 
     return (
       <div id="root">
         <div>
             <hr />
             <div className="bounds course--detail">
-                <h1>Create Course</h1>
+                <h1>Update Course</h1>
                 <div>
                 <div>
                     <Form
@@ -70,7 +63,6 @@ export default class UpdateCourse extends Component {
                                             type="text" 
                                             className="input-title course--title--input" 
                                             onChange={this.change} 
-                                            // placeholder="Course title..."
                                             value={title} />
                                     </div>
                                     <p>By {user.firstName} {user.lastName}</p>
@@ -82,7 +74,6 @@ export default class UpdateCourse extends Component {
                                             name="description" 
                                             className="" 
                                             onChange={this.change} 
-                                            // placeholder="Course description..."
                                             value={description}>
                                         </textarea>
                                     </div>
@@ -100,7 +91,6 @@ export default class UpdateCourse extends Component {
                                                 type="text" 
                                                 className="course--time--input"
                                                 onChange={this.change} 
-                                                // placeholder="Hours" 
                                                 value={estimatedTime} />
                                         </div>
                                     </li>
@@ -112,7 +102,6 @@ export default class UpdateCourse extends Component {
                                                 name="materialsNeeded" 
                                                 className="" 
                                                 onChange={this.change} 
-                                                // placeholder="List materials..."
                                                 value={materialsNeeded}>
                                             </textarea>
                                         </div>
@@ -130,11 +119,12 @@ export default class UpdateCourse extends Component {
     );
   }
 
+    // Updates the course information in the database
+    // Only the course creator is allowed update the course
     submit = () => {
         const { context } = this.props;
 
         const {
-            // course,
             title,
             description,
             estimatedTime,
@@ -151,34 +141,30 @@ export default class UpdateCourse extends Component {
             id: courseId,
         };
 
-        // console.log('course is ' + course);
         const authUser = context.authenticatedUser;
         const pass = context.unencryptedPassword;
-        // console.log('unencrypted password is ' + pass);
-        // console.log('authUsers email is ' + authUser.username);
             
 
         context.data.updateCourse(course, authUser.username, pass)
             .then( errors => {
                 if (errors.length) {
-                this.setState({ errors });
-                console.log(errors);
-                }
+                    this.setState({ errors });
+                    }
                 else {
-                console.log(`Course is updated!`);
-                this.props.history.push('/');
+                    this.props.history.push('/');
                 }
             })
             .catch( err => {
-                console.log(err);
-            //   this.props.history.push('/error');
+                this.props.history.push('/error');
             });
     }
 
+    // Cancel the course update and return to page with list of courses
     cancel = () => {
-        this.props.history.push('/');
+        this.props.history.goBack();;
     }
 
+    // Update the course attributes in state immediately upon changes in the UI
     change = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -188,34 +174,5 @@ export default class UpdateCourse extends Component {
         [name]: value
         };
     });
-    }
-
-//   submit = () => {
-//     const { context } = this.props;
-//     const { from } = this.props.location.state || { from: { pathname: '/authenticated' } };
-//     const { username, password } = this.state;
-//     context.actions.signIn(username, password)
-//       .then( user => {
-//         if (user === null) {
-//           this.setState( () => {
-//             return { errors: [ 'Sign-in was unsuccessful' ]};
-//           })
-//         }
-//         else {
-//           this.props.history.push(from);
-//           console.log(`Success!  ${username} is now signed in!`);
-//         }
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         this.props.history.push('/error');
-//       })
-
-//   }
-
-//   cancel = () => {
-//     this.props.history.push('/');
-//   }
-// }
-
+  }
 }

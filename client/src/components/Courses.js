@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 export default class Courses extends Component {
   state = {
@@ -42,46 +41,4 @@ export default class Courses extends Component {
       </div>
     );
   }
-
-  // goToCoursePage = (id) => {
-  //   this.props.history.push('/courses/' + id);
-  // }
-
-//   change = (event) => {
-//     const name = event.target.name;
-//     const value = event.target.value;
-
-//     this.setState(() => {
-//       return {
-//         [name]: value
-//       };
-//     });
-//   }
-
-//   submit = () => {
-//     const { context } = this.props;
-//     const { from } = this.props.location.state || { from: { pathname: '/authenticated' } };
-//     const { username, password } = this.state;
-//     context.actions.signIn(username, password)
-//       .then( user => {
-//         if (user === null) {
-//           this.setState( () => {
-//             return { errors: [ 'Sign-in was unsuccessful' ]};
-//           })
-//         }
-//         else {
-//           this.props.history.push(from);
-//           console.log(`Success!  ${username} is now signed in!`);
-//         }
-//       })
-//       .catch(err => {
-//         console.log(err);
-//         this.props.history.push('/error');
-//       })
-
-//   }
-
-//   cancel = () => {
-//     this.props.history.push('/');
-//   }
 }

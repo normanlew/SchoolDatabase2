@@ -14,13 +14,10 @@ export class Provider extends Component {
   constructor() {
     super();
     this.data = new Data();
-    // console.log("test");
-    // console.log(this.data);
   }
 
   render() {
     const { authenticatedUser, unencryptedPassword } = this.state;
-    console.log('inside context.js, the unencryptedpassword is ' + unencryptedPassword);
 
     const value = {
       authenticatedUser,
@@ -40,7 +37,8 @@ export class Provider extends Component {
     );
   }
 
-  
+  // Signs in the user by calling the get route in the API
+  // Saves the user and user's unencrypted password in the global state while the user is logged in
   signIn = async (emailAddress, password) => {
     const user = await this.data.getUser(emailAddress, password);
     if (user !== null) {
@@ -56,6 +54,7 @@ export class Provider extends Component {
     return user;
   }
 
+  // Signs out user by removing user's login information from the global state
   signOut = () => {
     this.setState(() => {
       return {
@@ -64,16 +63,8 @@ export class Provider extends Component {
       };
     });
     Cookies.remove('authenticatedUser');
-    Cookies.remove('unencryptedPassword');
+    Cookies.remove('password');
   }
-
-  // deleteCourse = async (emailAddress, password, id) => {
-  //   await this.data.deleteCourse(emailAddress, password, id);
-  // }
-
-  // createCourse = async (emailAddress, password, title, description, time, materials) {
-  //   await this
-  // }
 }
 
 export const Consumer = Context.Consumer;

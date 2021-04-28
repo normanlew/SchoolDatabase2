@@ -78,6 +78,7 @@ export default class UserSignUp extends Component {
     );
   }
 
+  // Update new user attributes stored in state upon changes in UI text input fields
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -89,6 +90,7 @@ export default class UserSignUp extends Component {
     });
   }
 
+  // Create new user in database with user attributes stored in state
   submit = () => {
     const { context } = this.props;
 
@@ -114,17 +116,17 @@ export default class UserSignUp extends Component {
             this.setState({ errors });
           }
           else {
-            context.actions.signIn(emailAddress, password)
-            console.log(`Successfully signed up!`);
+            context.actions.signIn(emailAddress, password);
+            this.props.history.push('/');
           }
         })
         .catch( err => {
-          console.log(err);
           this.props.history.push('/error');
         });
     }
   }
 
+  // Cancel new new creation and return to page list of courses
   cancel = () => {
     this.props.history.push('/');
   }
