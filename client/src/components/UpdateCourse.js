@@ -161,7 +161,7 @@ export default class UpdateCourse extends Component {
 
     // Cancel the course update and return to page with list of courses
     cancel = () => {
-        this.props.history.goBack();;
+        this.props.history.push('/');
     }
 
     // Update the course attributes in state immediately upon changes in the UI
