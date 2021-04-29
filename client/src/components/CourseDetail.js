@@ -91,7 +91,7 @@ export default class CourseDetail extends Component {
 
   // Removes the course from the database
   // Only the owner (creator) of the course may delete it
-  handleDelete = (event) => {
+  handleDelete = async (event) => {
     event.preventDefault();
     const {
       course,
@@ -101,6 +101,7 @@ export default class CourseDetail extends Component {
     const { context } = this.props;
     const authUser = context.authenticatedUser;
     const pass = context.unencryptedPassword;
-    context.data.deleteCourse(user.emailAddress, pass, course.id)
+    await context.data.deleteCourse(user.emailAddress, pass, course.id);
+    this.props.history.push('/');
   }
 }

@@ -151,7 +151,7 @@ export default class UpdateCourse extends Component {
                     this.setState({ errors });
                     }
                 else {
-                    this.props.history.push('/');
+                    this.props.history.push('/courses/' + courseId);
                 }
             })
             .catch( err => {

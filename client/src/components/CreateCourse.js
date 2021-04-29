@@ -136,6 +136,7 @@ export default class CreateCourse extends Component {
                 }
                 else {
                     this.setState({ errors: [] });
+                    this.props.history.push('/');
                 }
             })
             .catch( err => {
