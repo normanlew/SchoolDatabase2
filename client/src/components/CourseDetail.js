@@ -99,7 +99,6 @@ export default class CourseDetail extends Component {
     } = this.state;
 
     const { context } = this.props;
-    const authUser = context.authenticatedUser;
     const pass = context.unencryptedPassword;
     await context.data.deleteCourse(user.emailAddress, pass, course.id);
     this.props.history.push('/');
