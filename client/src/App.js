@@ -26,25 +26,28 @@ const CourseDetailWithContext = withContext(CourseDetail);
 const CreateCourseWithContext = withContext(CreateCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse);
 
-export default () => (
-  <Router>
-    <div id="root">
-      <div></div>
-      <hr></hr>
+const App = () => {
+  return (
+    <Router>
+      <div id="root">
+        <div></div>
+        <hr></hr>
 
-      <HeaderWithContext />
-      <Switch>
+        <HeaderWithContext />
+        <Switch>
 
-        <Route exact path="/" component={Courses} />
-        <PrivateRoute path="/courses/create" component={CreateCourseWithContext} />
-        <Route exact path="/courses/:id" component={CourseDetailWithContext} />
-        <PrivateRoute path="/courses/:id/update" component={UpdateCourseWithContext} />
-        <Route path="/signin" component={UserSignInWithContext} />
-        <Route path="/signout" component={UserSignOutWithContext} />
-        <Route path="/signup" component={UserSignUpWithContext} />
-        <Route component={NotFound} />
+          <Route exact path="/" component={Courses} />
+          <PrivateRoute path="/courses/create" component={CreateCourseWithContext} />
+          <Route exact path="/courses/:id" component={CourseDetailWithContext} />
+          <PrivateRoute path="/courses/:id/update" component={UpdateCourseWithContext} />
+          <Route path="/signin" component={UserSignInWithContext} />
+          <Route path="/signout" component={UserSignOutWithContext} />
+          <Route path="/signup" component={UserSignUpWithContext} />
+          <Route component={NotFound} />
 
-      </Switch>
-    </div>
-  </Router>
-);
+        </Switch>
+      </div>
+    </Router>
+  );
+};
+export default App;

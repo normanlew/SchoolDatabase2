@@ -44,7 +44,7 @@ export default class CourseDetail extends Component {
                   {
                     isAuthorized ? (
                       <React.Fragment>
-                        <span><a className="button" href={subAddress}>Update Course</a><a className="button" onClick={this.handleDelete} href="#">Delete Course</a></span>
+                        <span><a className="button" href={subAddress}>Update Course</a><a className="button" onClick={this.handleDelete} href="/">Delete Course</a></span>
                         <a className="button button-secondary" href="/">Return to List</a>
                       </React.Fragment>
                     ) : (
